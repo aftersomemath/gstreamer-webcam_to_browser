@@ -2,8 +2,68 @@
 <html>
 <meta charset="utf-8" />
 
-<title>WebSocket Test</title>
+<title>Rover Command Center</title>
 
+<style>
+#output {
+    border-style: dotted;
+    border-width: 1px;
+    max-width: 50%;
+}
+
+h2 {
+    text-align: center;
+}
+
+h3 {
+    text-align: center;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+#messagebox {
+    max-width: 50%;
+    max-height: 250px;
+    overflow: auto;
+    border-style: dotted;
+    border-width: 1px;
+}
+
+#videofeed {
+    display: block;
+    max-width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+
+#controlpanel {
+    border-style: dotted;
+    float:right;
+    border-width: 1px;
+    min-width: 45%;
+    height: 400px;
+}
+
+#forwardButton{
+ }  
+
+#backwardButton{
+    
+}
+
+#leftButton{
+}
+
+#rightButton{
+
+}
+
+div {
+ margin: 1%;
+}
+
+</style>
 <script language="javascript" type="text/javascript">
 
   var ip = location.host;
@@ -17,12 +77,15 @@
   function init()
   {
     output = document.getElementById("output");
+    messagebox = document.getElementById("messagebox");
     img = document.createElement("img");
-    img.height = 360;
-    img.src = "";
+    img.id = "videofeed";
+    img.src = "http://www.asphaltandrubber.com/wp-content/gallery/ktm-390-duke-in-high-resolution/2013-ktm-390-duke-high-resolution-08.jpg";
     output.appendChild(img);
     testWebSocket();
     window.setTimeout(sendCommandVector, 1000);
+    
+    writeToScreen('<span style="color: Green;">Welcome to Rover Commander</span> ');
   }
 
   function sendCommandVector() {
@@ -76,9 +139,7 @@
     img.onload = function(e) {
         window.URL.revokeObjectURL(this.imageURL);
     }
-
-    //console.log(evt.data);
-  }
+ }
 
   function onError(evt)
   {
@@ -90,7 +151,9 @@
     var pre = document.createElement("p");
     pre.style.wordWrap = "break-word";
     pre.innerHTML = message;
-    output.appendChild(pre);
+    messagebox.appendChild(pre);
+    
+    messagebox.scrollTop = messagebox.scrollHeight;
   }
 
   window.addEventListener("load", init, false);
@@ -102,6 +165,9 @@
     switch(keyCode){
       case 87: //w
       vector[1] = 1;
+      forward = document.getElementById("forwardButton");
+      forward.click();
+      console.log('hey');
       break;
 
       case 65: //a
@@ -162,9 +228,15 @@
 
 </script>
 <body>
-<h2>WebSocket Test</h2>
-
-<div id="output"></div>
+<h2>Rover Command Center</h2>
+<div id="controlpanel">
+    <h3>Control Panel</h3>
+    <p> W,A,S,D = Direction </p>
+    <button>Call QuadCopter</button>
+    <button>Toggle Telemetry Data</button>
+</div>
+<div id="output"><h3>Video Feed</h3></div>
+<div id="messagebox"><h3>Message Center</h3></div>
 </body>
 
 </html>
